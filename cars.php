@@ -1,6 +1,7 @@
 [8:33] Király Gábor
 <?php
 //require_once('csv-tools.php');
+require_once('db-tools.php');
 ini_set('memory_limit','560M');
 $FileName  = "car-db.csv";
 $csvData = getCsvData($FileName);
@@ -56,14 +57,18 @@ function getMakers($csvData)
 function insertMakers($mysqli, $makers, $truncate = false)
 {
     $mysqli = new mysqli("localhost","root",null,"cars");
- 
+    $errors = [];
     if ($mysqli -> connect_errno) {
         echo "Failed to connect to MySQL: " . $mysqli -> connect_error;
         exit();
     }
     $mysqli->query("TRUNCATE TABLE makers;");
     foreach ($makers as $maker){
-        $mysqli->query("INSERT INTO makers (name) VALUES ('$maker')");
+        $result = $mysqli->query("INSERT INTO makers (name) VALUES ('$maker')");
+        if (!$result)
+        {
+            $errors[] = $maker;
+        }
         echo "$maker\n";
     }
     return $result;
