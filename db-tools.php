@@ -30,4 +30,20 @@ function getMakersByName($mysqli, $name)
     return $maker;
 }
 
+function delMaker($mysqli, $name)
+{
+    $result = $mysqli->query("DELETE makers WHERE id = $id");
+    return $result;
+}
+
+function getAllMakers($mysqli)
+{
+    $result = $mysqli->query("SELECT * FROM makers");
+    $makers = $result->fetch_assoc();
+    $result = free_result();
+
+    return $makers;
+}
+
+
 ?>
